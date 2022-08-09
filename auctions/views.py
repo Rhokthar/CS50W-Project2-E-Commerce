@@ -5,12 +5,14 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from django.forms import ModelForm
+from django.contrib.auth.decorators import login_required 
 
 from .models import Listing, User
 from .forms import *
 
 
 # CREATE LISTING FUNCTION STARTS
+@login_required
 def CreateListing(request):
     # POST METHOD
     if request.method == "POST":
@@ -32,12 +34,11 @@ def CreateListing(request):
             # Error
             except:
                 return render(request, "auctions/new-listing.html", {
-                    "error": "Something went wrong."
+                    "error": "Something went wrong.",
+                    "form": listingForm
                 })
             
-            return render(request, "auctions/index.html", {
-                "successMessage": "Listing created successfully!"
-            })
+            return HttpResponseRedirect(reverse("index"))
     
     # GET METHOD
     # User Not Authenticated
@@ -53,9 +54,18 @@ def CreateListing(request):
 # INDEX FUNCTION STARTS
 def index(request):
     # Creare una lista con tutti i listing
-    # In ogni listing mandato, devo far vedere il titolo, una breve descrizione, prezzo e foto
-    return render(request, "auctions/index.html")
+    listingList = Listing.objects.all().order_by("-id")
+    return render(request, "auctions/index.html", {
+        "listingList": listingList
+    })
 # INDEX FUNCTION ENDS
+
+
+def ListingsPage(request, id):
+    return render(request, "auctions/listing-page.html", {
+        "listing": Listing.objects.get(id=id)
+    })
+
 
 
 # LOGIN VIEW FUNCTION STARTS

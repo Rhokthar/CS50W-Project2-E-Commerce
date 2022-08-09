@@ -14,6 +14,7 @@ h1 {
 }
 h2 {
     font-size: 3rem;
+    font-weight: 600;
 }
 strong {
     font-weight: bold;
@@ -26,7 +27,12 @@ textarea,
 select {
     margin-bottom: 2rem;
 }
+
 label {
     padding-bottom: 1rem;
+}
+
+.listing-wrapper p {
+    font-size: 1.4rem;
 }
 /* CREATE LISTING RULES ENDS */

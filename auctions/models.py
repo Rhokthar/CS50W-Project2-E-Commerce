@@ -35,7 +35,7 @@ class Listing(models.Model):
     # Seller
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     # IMG
-    imageURL = models.URLField("Image URL", default="https://www.svaghiamo.it/noleggio-calcio-balilla-4-contro-4/image-not-found-4a963b95bf081c3ea02923dceaeb3f8085e1a654fc54840aac61a57a60903fef/#iLightbox[postimages]/0")
+    imageURL = models.URLField("Image URL", default=None, blank=True, null=True)
     # Category
     category = models.CharField(max_length=64, choices=CATEGORIES_CHOICES, default=HOM)
 # LISTING CLASS ENDS
