@@ -1,7 +1,15 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
+    {% if successMessage %}
+        <span style="color: green;">{{ successMessage }}</span>
+    {% endif %}
     <h2>Active Listings</h2>
-
+    <!-- Devo fare vedere i listing -->
+    <!-- Ogni listing deve avere titolo, descrizione, prezzo e foto -->
+    <!-- Ogni listing deve linkare alla pagina di se stesso con tutte le relative info -->
+    <!-- Voglio far vedere un massimo di 4-5 listing per riga (se piccoli); 3 se grandi -->
+    <!-- Posso raggruppare i vari listing in delle sorta di mini-schede -->
+    <!-- Devo capire come usare l'url di ciascun listing per impostare l'immagine -->
     TODO
 {% endblock %}

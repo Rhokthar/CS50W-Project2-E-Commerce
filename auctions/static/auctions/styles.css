@@ -1,3 +1,32 @@
+/* GENERAL RULES STARTS */
 body {
-    padding: 10px;
+    padding: 1rem;
+    font-size: 1.7rem;
+    font-family: Arial, Helvetica, sans-serif;
 }
+a,
+p {
+    font-family: Verdana, Geneva, Tahoma, sans-serif; 
+}
+h1 {
+    font-size: 5rem;
+    font-weight: 750;
+}
+h2 {
+    font-size: 3rem;
+}
+strong {
+    font-weight: bold;
+}
+/* GENERAL RULES ENDS */
+
+/* CREATE LISTING RULES STARTS */
+input,
+textarea,
+select {
+    margin-bottom: 2rem;
+}
+label {
+    padding-bottom: 1rem;
+}
+/* CREATE LISTING RULES ENDS */

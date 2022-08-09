@@ -1,0 +1,22 @@
+{% extends "./layout.html" %}
+
+{% block title %}
+New Listing
+{% endblock %}
+
+{% block body %}
+{% if error %}
+    <div>
+        <p>{{ error }}</p>
+    </div>
+{% endif %}
+<div class="flex-container justify-center width-100">
+    <form action="{% url 'create-listing' %}" method="post">
+        {% csrf_token %}
+        <div class="flex-container vertical-row align-center">
+            {{ form }}
+            <input class="margin-top-xs" type="submit" value="Create Listing" />
+        </div>
+    </form>
+</div>
+{% endblock %}
