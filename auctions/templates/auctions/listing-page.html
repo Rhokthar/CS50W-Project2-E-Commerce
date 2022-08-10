@@ -5,5 +5,62 @@
 {% endblock %}
 
 {% block body %}
-Listing Page {{ listing.id }}
-{% endblock %}
+<div class="listing-page-wrapper flex-container vertical-row width-100">
+    <!-- LISTING CONTAINER STARTS -->
+    <div class="listing-container flex-container row width-100">
+        <!-- Left Part -->
+        <div class="img-container width-33 padding-all-s">
+            <input type="checkbox" />
+            <img src="../../static/auctions/imgs/Placeholder.png" alt="Placeholder" />
+            
+            <!-- Cliccando sui Bottoni devo poter aggiornare il DB -->
+            <!-- Bid deve rimandare ad un altra pagina o lo fa qua? -->
+            <!-- Close Listing deve far uscire un messaggio che dice che l'asta è chiusa e
+                disabilitare watchlist e bid come pulsanti -->
+                <div class="buttons-container flex-container justify-center align-center padding-all-xs row width-100">
+                    <!-- Watchlist -->
+                    <form action="{% url 'watchlist' %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" class="user-id" name="user-id" value="{{ user.id }}">
+                        <button class="listing-button" id="watchlist-item" name="watchlist-item" type="submit" value="{{ listing.id }}">
+                            {% if not user.is_authenticated %}
+                            <a href="{% url 'login' %}">Watchlist</a>
+                            {% else %}
+                            Watchlist
+                            {% endif %}    
+                        </button>
+                    </form>
+                    <!-- Bid -->
+                    <form action="{% url 'bid' %}" method="get">
+                        {% csrf_token %}
+                        <button class="listing-button" type="submit">
+                            {% if not user.is_authenticated %}
+                                <a href="{% url 'login' %}">Bid</a>
+                            {% else %}
+                            Bid
+                            {% endif %}
+                        </button>
+                        <input type="number" id="bid-value" name="bid-value" /> €
+                    </form>
+                    <!-- Close Listing -->
+                    {% if user.id == listing.user.id %}
+                    <form action="{% url 'close-listing' %}" method="get">
+                        {% csrf_token %}
+                        <button class="listing-button" id="close-listing" name="close-listing" type="submit" value="{{ listing.id }}">Close Listing</button>
+                    </form>              
+                    {% endif %}
+                </div>
+            </div>
+            <!-- Right Part -->
+            <div class="width-66 padding-all-s">
+                <p>Category: {{ listing.category }}</p>
+                <h2><strong>{{ listing.title }}</strong></h2>
+                <p>{{ listing.description }}</p>
+                <p>Actual Price: <strong>{{ listing.price }} €</strong></p>
+                <p>Seller: {{ listing.user.username }}</p>
+            </div>
+        </div> <!-- LISTING CONTAINER ENDS -->
+        
+        
+    </div>
+    {% endblock %}

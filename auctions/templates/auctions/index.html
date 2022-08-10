@@ -1,9 +1,6 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-    {% if successMessage %}
-        <span style="color: green;">{{ successMessage }}</span>
-    {% endif %}
     <h2>Active Listings</h2>
     <div class="listing-wrapper flex-container row flex-wrap width-100">
         {% for listing in listingList %}
@@ -14,9 +11,9 @@
                 </a>
             </div>
             <div class="text-center padding-left-xs padding-right-xs width-100">
-                <strong>{{ listing.title }}</strong>
+                <p><strong>{{ listing.title }}</strong></p>
                 <p class="description padding-bottom-xs padding-top-xs"> {{ listing.description }} </p>
-                <p>Actual Price: {{ listing.price }} € </p>
+                <p>Actual Price: <strong>{{ listing.price }} €</strong></p>
             </div>
         </div>
         {% endfor %}

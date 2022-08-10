@@ -1,0 +1,27 @@
+{% extends "./layout.html" %}
+
+{% block title %}
+Watchlist
+{% endblock %}
+
+{% block body %}
+    <h2>Your Watchlist Items</h2>
+    <div class="wishlist-items-wrapper flex-container row width-100">
+        {% for item in user.watchlist.all %}
+        <div class="flex-container vertical-row width-20 padding-all-s">
+            <div class="img-wrapper width-100">
+                <a href="{% url 'listing-page' item.id %}">
+                    <img src="../../static/auctions/imgs/Placeholder.png" alt="Placeholder" />
+                </a>
+            </div>
+            <div class="text-wrapper text-center">
+                <h3  >{{ item.title }}</h3>
+                <p>{{ item.description }}</p>
+                <p>Actual Price: <strong>{{ item.price }} €</strong></p>
+            </div>
+        </div>
+        {% empty %}
+            None
+        {% endfor %}
+    </div>
+{% endblock %}

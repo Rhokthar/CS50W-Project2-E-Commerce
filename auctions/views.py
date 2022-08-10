@@ -10,6 +10,10 @@ from django.contrib.auth.decorators import login_required
 from .models import Listing, User
 from .forms import *
 
+@login_required
+def CloseListing(request):
+    pass
+
 
 # CREATE LISTING FUNCTION STARTS
 @login_required
@@ -96,6 +100,10 @@ def logout_view(request):
     return HttpResponseRedirect(reverse("index"))
 # LOGOUT VIEW FUNCTION ENDS
 
+@login_required
+def NewBid(request):
+    pass
+
 
 # REGISTER FUNCTION STARTS
 def register(request):
@@ -124,3 +132,15 @@ def register(request):
     else:
         return render(request, "auctions/register.html")
 # REGISTER FUNCTION ENDS
+
+@login_required
+def WatchlistHandler(request):
+    if request.method == "POST":
+        listingItem = Listing.objects.get(id=request.POST["watchlist-item"])
+        watchlistUser = User.objects.get(id=request.POST["user-id"])
+        watchlistUser.watchlist.add(listingItem)
+        watchlistUser.save()
+
+        return HttpResponseRedirect(reverse("watchlist"))
+    
+    return render(request, "auctions/watchlist.html")

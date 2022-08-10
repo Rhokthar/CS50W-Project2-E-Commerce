@@ -16,7 +16,11 @@ h2 {
     font-size: 3rem;
     font-weight: 600;
 }
-strong {
+h3 {
+    font-size: 2rem;
+    font-weight: 500;
+}
+strong { 
     font-weight: bold;
 }
 /* GENERAL RULES ENDS */
@@ -27,12 +31,33 @@ textarea,
 select {
     margin-bottom: 2rem;
 }
-
 label {
     padding-bottom: 1rem;
 }
+/* CREATE LISTING RULES ENDS */
 
+/* INDEX RULES STARTS */
 .listing-wrapper p {
     font-size: 1.4rem;
 }
-/* CREATE LISTING RULES ENDS */
+/* INDEX RULES ENDS */
+
+/* LISTING PAGE RULES STARTS */
+.img-container {
+    position: relative;
+}
+input[type="checkbox"] {
+    position: absolute;
+    top: 3%;
+    left: 3%;
+}
+.listing-button {
+    cursor: pointer;
+    padding: 0.75rem;
+    margin: 2rem;
+}
+.listing-button > a {
+    text-decoration: none;
+    color: black;
+}
+/* LISTING PAGE RULES ENDS */
