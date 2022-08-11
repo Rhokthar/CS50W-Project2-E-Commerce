@@ -63,4 +63,7 @@ input[type="checkbox"] {
     text-decoration: none;
     color: black;
 }
+.comment-textarea {
+    resize: none;
+}
 /* LISTING PAGE RULES ENDS */

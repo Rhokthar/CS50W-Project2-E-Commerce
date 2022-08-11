@@ -27,6 +27,30 @@ def CloseListing(request):
 # CLOSE LISTING FUNCTION ENDS
 
 
+# COMMENT FUNCTION STARTS
+@login_required
+def CommentHandler(request):
+    # Deve prendere l'utente che ha fatto il commento
+    commentUser = User.objects.get(id=request.POST["comment-user"])
+    print(commentUser.username)
+    # Deve prendere l'oggetto su cui è stato fatto il commento
+    commentListing = Listing.objects.get(id=request.POST["comment-listing"])
+    print(commentListing.id)
+    # Deve prendere il commento effettivo
+    commentContent = request.POST["comment-content"]
+    print(commentContent)
+
+    # Deve aggiungere tutto ciò alla table dei commenti
+    Comment.objects.create(user=commentUser, listing=commentListing, comment=commentContent)
+    
+    return HttpResponseRedirect(reverse('listing-page', args=[request.POST["comment-listing"]]))
+    # BUGGIA QUESTO VA FATTO SULLA INDEX
+    # Se get, deve displayare tutti i commenti su quell'oggetto
+        # Dovrà passare chi ha fatto il commento
+        # Dovrà passare l'effettivo commento
+# COMMENT FUNCTION ENDS
+
+
 # CREATE LISTING FUNCTION STARTS
 @login_required
 def CreateListing(request):
@@ -94,7 +118,8 @@ def ListingsPage(request, id):
 
     return render(request, "auctions/listing-page.html", {
         "listing": listing,
-        "winner": winner 
+        "winner": winner,
+        "comments": Comment.objects.filter(listing=listing).all() 
     })
 # LISTING PAGE FUNCTION ENDS
 

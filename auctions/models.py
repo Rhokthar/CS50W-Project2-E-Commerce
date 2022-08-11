@@ -14,6 +14,18 @@ class Bid(models.Model):
 # BID MODEL ENDS
 
 
+# COMMENTS MODEL STARTS
+class Comment(models.Model):
+    # ID
+    # User che ha fatto il commento
+    user = models.ForeignKey("User", on_delete=models.CASCADE, default=None)
+    # Su che oggetto ha fatto il commento
+    listing = models.ForeignKey("Listing", on_delete=models.CASCADE, default=None)
+    # Contenuto del commento
+    comment = models.TextField("Comment", max_length=1024, default=None, null=False, blank=False)
+# COMMENTS MODEL ENDS
+
+
 # Choices Vars for Listing
 FSH = "Fashion"
 TOY = "Toys"
@@ -56,9 +68,3 @@ class User(AbstractUser):
     def __str__(self):
         return f"{id}"
 # USER MODEL ENDS
-
-
-# COMMENTS MODEL STARTS
-class Comment(models.Model):
-    pass
-# COMMENTS MODEL ENDS

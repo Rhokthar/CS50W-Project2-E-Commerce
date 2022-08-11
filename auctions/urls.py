@@ -11,5 +11,6 @@ urlpatterns = [
     path("listings/<int:id>", views.ListingsPage, name="listing-page"),
     path("watchlist", views.WatchlistHandler, name="watchlist"),
     path("bid", views.NewBid, name="bid"),
-    path("close-listing", views.CloseListing, name="close-listing")
+    path("close-listing", views.CloseListing, name="close-listing"),
+    path("comment", views.CommentHandler, name="comment")
 ]

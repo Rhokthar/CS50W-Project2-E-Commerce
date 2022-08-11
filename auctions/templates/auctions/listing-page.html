@@ -5,7 +5,9 @@
 {% endblock %}
 
 {% block body %}
+<!-- FULL PAGE WRAPPER STARTS -->
 <div class="listing-page-wrapper flex-container vertical-row width-100">
+
     {% if listing.openListing == False %}
     <h3><strong>This Listing has been CLOSED.</strong></h3>
         {% if winner == None %}
@@ -16,75 +18,109 @@
             <p>The winner of this auction is the user '{{ winner.user.username }}'!</p>
         {% endif %}
     {% endif %}
-    <!-- LISTING CONTAINER STARTS -->
+    <!-- MESSAGES -->
     {% for message in messages %}
         {{ message }}
     {% endfor %}
+    <!-- AUCTION CONTAINER STARTS -->
     <div class="listing-container flex-container row width-100"> 
-        <!-- Left Part -->
+        <!-- IMAGE & BUTTONS SECTION STARTS -->
         <div class="img-container width-33 padding-all-s">
-            <input type="checkbox" />
+
             <img src="../../static/auctions/imgs/Placeholder.png" alt="Placeholder" />
-            
-            <!-- Cliccando sui Bottoni devo poter aggiornare il DB -->
-            <!-- Bid deve rimandare ad un altra pagina o lo fa qua? -->
-            <!-- Close Listing deve far uscire un messaggio che dice che l'asta è chiusa e
-                disabilitare watchlist e bid come pulsanti -->
-                {% if listing.openListing == True %}
-                    <div class="buttons-container flex-container justify-center align-center padding-all-xs row width-100">
-                        <!-- Watchlist -->
-                        <form action="{% url 'watchlist' %}" method="post">
-                            {% csrf_token %}
-                            <input type="hidden" class="user-id" name="user-id" value="{{ user.id }}" />
-                            <button type="submit" class="listing-button" id="watchlist-item" name="watchlist-item" value="{{ listing.id }}">
-                                {% if not user.is_authenticated %}
+
+            {% if listing.openListing == True %}
+                <!-- BUTTONS CONTAINER STARTS -->
+                <div class="buttons-container flex-container justify-center align-center padding-all-xs row width-100">
+                    <!-- Watchlist STARTS -->
+                    <form action="{% url 'watchlist' %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" class="user-id" name="user-id" value="{{ user.id }}" />
+                        <button type="submit" class="listing-button" id="watchlist-item" name="watchlist-item" value="{{ listing.id }}">
+                            {% if not user.is_authenticated %}
                                 <a href="{% url 'login' %}">Add Watchlist</a>
-                                {% elif listing in user.watchlist.all %}
+                            {% elif listing in user.watchlist.all %}
                                 <input type="hidden" class="handling-type" name="handling-type" value="remove" />
                                 Remove
-                                {% else %}
+                            {% else %}
                                 <input type="hidden" class="handling-type" name="handling-type" value="add" />
                                 Add Watchlist
-                                {% endif %}    
-                            </button>
-                        </form>
-                        <!-- Bid -->
-                        <!-- No Sense that the user who posted the listing can bid on it -->
-                        {% if not user == listing.user %}
-                        <form action="{% url 'bid' %}" method="post">
-                            {% csrf_token %}
-                            <button class="listing-button" type="submit">
-                                {% if not user.is_authenticated %}
-                                    <a href="{% url 'login' %}">Bid</a>
-                                {% else %}
+                            {% endif %}    
+                        </button>
+                    </form> <!-- Watchlist ENDS -->
+                    <!-- Bid STARTS -->
+                    <!-- No Sense that the user who posted the listing can bid on it -->
+                    {% if not user == listing.user %}
+                    <form action="{% url 'bid' %}" method="post">
+                        {% csrf_token %}
+                        <button class="listing-button" type="submit">
+                            {% if not user.is_authenticated %}
+                                <a href="{% url 'login' %}">Bid</a>
+                            {% else %}
                                 Bid
-                                {% endif %}
-                            </button>
-                            <input type="hidden" class="user-id" name="user-id" value="{{ user.id }}" />
-                            <input type="hidden" id="bid-item" name="bid-item" value="{{ listing.id }}" />
-                            <input type="number" id="bid-value" name="bid-value" step="0.01"/> €
-                        </form>
-                        {% endif %}
-                        <!-- Close Listing -->
-                        {% if user.id == listing.user.id %}
+                            {% endif %}
+                        </button>
+                        <input type="hidden" class="user-id" name="user-id" value="{{ user.id }}" />
+                        <input type="hidden" id="bid-item" name="bid-item" value="{{ listing.id }}" />
+                        <input type="number" id="bid-value" name="bid-value" step="0.01"/> €
+                    </form> <!-- Bid ENDS -->
+                    {% endif %}
+                    <!-- Close Listing STARTS -->
+                    {% if user.id == listing.user.id %}
                         <form action="{% url 'close-listing' %}" method="POST">
                             {% csrf_token %}
                             <button class="listing-button" id="close-listing" name="close-listing" type="submit" value="{{ listing.id }}">Close Listing</button>
-                        </form>              
-                        {% endif %}
-                    </div>
-                {% endif %}
+                        </form> <!-- Close Listing ENDS -->            
+                    {% endif %}
+                </div> <!-- BUTTONS CONTAINER ENDS -->
+            {% endif %}
+        </div> <!-- IMAGE & BUTTONS SECTION ENDS -->
+        <!-- DESCRIPTION SECTION STARTS -->
+        <div class="width-66 padding-all-s">
+            <p>Category: {{ listing.category }}</p>
+            <h2><strong>{{ listing.title }}</strong></h2>
+            <p>{{ listing.description }}</p>
+            <p>Actual Price: <strong>{{ listing.price|floatformat:2 }} €</strong></p>
+            <p>Seller: {{ listing.user.username }}</p>
+        </div> <!-- DESCRIPTION SECTION ENDS -->
+    </div> <!-- AUCTION CONTAINER ENDS -->
+
+    <!-- COMMENTS CONTAINER STARTS -->
+    <div class="comments-container flex-container padding-all-s vertical-row width-100">
+        <h3><strong>COMMENTS</strong></h3>
+        <!-- Comment Display -->
+        {% for comment in comments %}
+            <div class="padding-top-s width-100">
+                <h4>{{ comment.user.username }}</h4>
+                <p>{{ comment.comment }}</p>
+                {% empty %}
+                <p>No comments yet. Be the first!</p>
             </div>
-            <!-- Right Part -->
-            <div class="width-66 padding-all-s">
-                <p>Category: {{ listing.category }}</p>
-                <h2><strong>{{ listing.title }}</strong></h2>
-                <p>{{ listing.description }}</p>
-                <p>Actual Price: <strong>{{ listing.price|floatformat:2 }} €</strong></p>
-                <p>Seller: {{ listing.user.username }}</p>
-            </div>
-        </div> <!-- LISTING CONTAINER ENDS -->
-        
-        
-    </div>
-    {% endblock %}
+        {% endfor %}
+        {% if listing.openListing == True %}
+            <!-- Comment Form STARTS -->
+            <form action="{% url 'comment' %}" method="post">
+                {% csrf_token %}
+                <div class="flex-container vertical-row align-center margin-top-s width-100">
+                    <textarea class="comment-textarea width-100" id="comment-content" name="comment-content" placeholder="Add a Comment..." rows="7"></textarea>
+                    <input type="hidden" id="comment-user" name="comment-user" value="{{ user.id }}" />                
+                    <input type="hidden" id="comment-listing" name="comment-listing" value="{{ listing.id }}" />                
+                    <span>
+                        <button class="listing-button" type="submit" id="comment-submit" name="comment-submit">
+                            {% if not user.is_authenticated %}
+                                <a href="{% url 'login' %}">Add Comment</a>
+                                {% else %}
+                                    Add Comment
+                            {% endif %}
+                        </button>
+                    </span>
+                </div>
+            </form> <!-- Comment Form ENDS -->
+        {% else %}
+        <div class="padding-top-m text-center">
+            <p><strong>Comments are disabled on closed auctions.</strong></p>
+        </div>
+        {% endif %}
+    </div> <!-- COMMENTS CONTAINER ENDS -->
+</div> <!-- FULL PAGE WRAPPER ENDS -->
+{% endblock %}
