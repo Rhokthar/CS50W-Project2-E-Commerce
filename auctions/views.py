@@ -15,7 +15,15 @@ from .forms import *
 # CLOSE LISTING FUNCTION STARTS
 @login_required
 def CloseListing(request):
-    pass
+    # Utente che ha creato il listing può chiuderla
+    closeListingID = Listing.objects.get(id=request.POST["close-listing"])
+    
+    # Listing disabilitata
+    closeListingID.openListing = False
+    closeListingID.save()
+
+    messages.success(request, "Listing closed successfully!")
+    return HttpResponseRedirect(reverse('listing-page', args=[closeListingID.id]))
 # CLOSE LISTING FUNCTION ENDS
 
 
@@ -71,8 +79,22 @@ def index(request):
 
 # LISTING PAGE FUNCTION STARTS
 def ListingsPage(request, id):
+    # Vars
+    listing = Listing.objects.get(id=id)
+    winner = None
+
+    # Listing Closed -> Search Winner
+    if listing.openListing == False:
+        # At Least One Bid
+        try:
+            winner = Bid.objects.filter(listing=listing).latest("offer")
+        # Not a Single Bid
+        except:
+            winner = None
+
     return render(request, "auctions/listing-page.html", {
-        "listing": Listing.objects.get(id=id) 
+        "listing": listing,
+        "winner": winner 
     })
 # LISTING PAGE FUNCTION ENDS
 

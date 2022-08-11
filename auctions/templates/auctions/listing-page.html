@@ -6,6 +6,16 @@
 
 {% block body %}
 <div class="listing-page-wrapper flex-container vertical-row width-100">
+    {% if listing.openListing == False %}
+    <h3><strong>This Listing has been CLOSED.</strong></h3>
+        {% if winner == None %}
+            <p>Nobody has done any bid on this auction.</p>
+        {% elif winner != None and user.is_authenticated and user.id == winner.user.id %}
+            <p>You are the winner of this auction!</p>
+        {% else %}
+            <p>The winner of this auction is the user '{{ winner.user.username }}'!</p>
+        {% endif %}
+    {% endif %}
     <!-- LISTING CONTAINER STARTS -->
     {% for message in messages %}
         {{ message }}
@@ -20,48 +30,50 @@
             <!-- Bid deve rimandare ad un altra pagina o lo fa qua? -->
             <!-- Close Listing deve far uscire un messaggio che dice che l'asta è chiusa e
                 disabilitare watchlist e bid come pulsanti -->
-                <div class="buttons-container flex-container justify-center align-center padding-all-xs row width-100">
-                    <!-- Watchlist -->
-                    <form action="{% url 'watchlist' %}" method="post">
-                        {% csrf_token %}
-                        <input type="hidden" class="user-id" name="user-id" value="{{ user.id }}" />
-                        <button type="submit" class="listing-button" id="watchlist-item" name="watchlist-item" value="{{ listing.id }}">
-                            {% if not user.is_authenticated %}
-                            <a href="{% url 'login' %}">Add Watchlist</a>
-                            {% elif listing in user.watchlist.all %}
-                            <input type="hidden" class="handling-type" name="handling-type" value="remove" />
-                            Remove
-                            {% else %}
-                            <input type="hidden" class="handling-type" name="handling-type" value="add" />
-                            Add Watchlist
-                            {% endif %}    
-                        </button>
-                    </form>
-                    <!-- Bid -->
-                    <!-- No Sense that the user who posted the listing can bid on it -->
-                    {% if not user == listing.user %}
-                    <form action="{% url 'bid' %}" method="post">
-                        {% csrf_token %}
-                        <button class="listing-button" type="submit">
-                            {% if not user.is_authenticated %}
-                                <a href="{% url 'login' %}">Bid</a>
-                            {% else %}
-                            Bid
-                            {% endif %}
-                        </button>
-                        <input type="hidden" class="user-id" name="user-id" value="{{ user.id }}" />
-                        <input type="hidden" id="bid-item" name="bid-item" value="{{ listing.id }}" />
-                        <input type="number" id="bid-value" name="bid-value" step="0.01"/> €
-                    </form>
-                    {% endif %}
-                    <!-- Close Listing -->
-                    {% if user.id == listing.user.id %}
-                    <form action="{% url 'close-listing' %}" method="get">
-                        {% csrf_token %}
-                        <button class="listing-button" id="close-listing" name="close-listing" type="submit" value="{{ listing.id }}">Close Listing</button>
-                    </form>              
-                    {% endif %}
-                </div>
+                {% if listing.openListing == True %}
+                    <div class="buttons-container flex-container justify-center align-center padding-all-xs row width-100">
+                        <!-- Watchlist -->
+                        <form action="{% url 'watchlist' %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" class="user-id" name="user-id" value="{{ user.id }}" />
+                            <button type="submit" class="listing-button" id="watchlist-item" name="watchlist-item" value="{{ listing.id }}">
+                                {% if not user.is_authenticated %}
+                                <a href="{% url 'login' %}">Add Watchlist</a>
+                                {% elif listing in user.watchlist.all %}
+                                <input type="hidden" class="handling-type" name="handling-type" value="remove" />
+                                Remove
+                                {% else %}
+                                <input type="hidden" class="handling-type" name="handling-type" value="add" />
+                                Add Watchlist
+                                {% endif %}    
+                            </button>
+                        </form>
+                        <!-- Bid -->
+                        <!-- No Sense that the user who posted the listing can bid on it -->
+                        {% if not user == listing.user %}
+                        <form action="{% url 'bid' %}" method="post">
+                            {% csrf_token %}
+                            <button class="listing-button" type="submit">
+                                {% if not user.is_authenticated %}
+                                    <a href="{% url 'login' %}">Bid</a>
+                                {% else %}
+                                Bid
+                                {% endif %}
+                            </button>
+                            <input type="hidden" class="user-id" name="user-id" value="{{ user.id }}" />
+                            <input type="hidden" id="bid-item" name="bid-item" value="{{ listing.id }}" />
+                            <input type="number" id="bid-value" name="bid-value" step="0.01"/> €
+                        </form>
+                        {% endif %}
+                        <!-- Close Listing -->
+                        {% if user.id == listing.user.id %}
+                        <form action="{% url 'close-listing' %}" method="POST">
+                            {% csrf_token %}
+                            <button class="listing-button" id="close-listing" name="close-listing" type="submit" value="{{ listing.id }}">Close Listing</button>
+                        </form>              
+                        {% endif %}
+                    </div>
+                {% endif %}
             </div>
             <!-- Right Part -->
             <div class="width-66 padding-all-s">
