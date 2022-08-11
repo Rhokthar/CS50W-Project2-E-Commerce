@@ -12,5 +12,7 @@ urlpatterns = [
     path("watchlist", views.WatchlistHandler, name="watchlist"),
     path("bid", views.NewBid, name="bid"),
     path("close-listing", views.CloseListing, name="close-listing"),
-    path("comment", views.CommentHandler, name="comment")
+    path("comment", views.CommentHandler, name="comment"),
+    path("categories", views.Categories, name="categories"),
+    path("category/<str:category>", views.Category, name="category")
 ]

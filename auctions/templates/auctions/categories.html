@@ -1,0 +1,44 @@
+{% extends "./layout.html" %}
+
+{% block title %}
+Categories
+{% endblock %}
+
+{% block body %}
+    {% if listFlag == True %}
+        <h2>Categories:</h2>
+        <ul>
+            {% for category in categories %}
+                <a href="{% url 'category' category %}">
+                    <li>{{ category }}</li>
+                </a>
+            {% empty %}
+                No categories
+            {% endfor %}
+        </ul>
+    {% else %}
+        <h2>Search result for {{ category }}:</h2>
+        <div class="listing-wrapper flex-container row flex-wrap width-100">
+            {% for listing in listings %}
+                <div class="width-20 padding-all-s">
+                    <div class="width-100">
+                        <a href="{% url 'listing-page' listing.id %}">
+                            <img src="../../static/auctions/imgs/Placeholder.png" alt="Listing Image" />
+                        </a>
+                    </div>
+                    <div class="text-center padding-left-xs padding-right-xs width-100">
+                        <p><strong>{{ listing.title }}</strong></p>
+                        <p class="description padding-bottom-xs padding-top-xs"> {{ listing.description }} </p>
+                        <p>Actual Price: <strong>{{ listing.price|floatformat:2 }} €</strong></p>
+                        {% if listing.openListing == False %}
+                            <h3><strong>CLOSED</strong></h3>
+                        {% endif %}
+                    </div>
+                </div>
+                {% empty %}
+                No listings for category '{{ category }}'
+            {% endfor %}
+        </div>
+    {% endif %}
+
+{% endblock %}

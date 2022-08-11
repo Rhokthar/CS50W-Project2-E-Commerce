@@ -26,6 +26,31 @@ strong {
 .error-color {
     color: red;
 }
+.nav {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.nav-item {
+    padding: 1rem;
+}
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    box-shadow: 0 0.5rem 0.5rem black;
+    z-index: 1;
+}
+.dropdown-content a {
+    padding: 1rem 1.5rem;
+    text-decoration: none;
+    display: block;
+}
+.dropdown:hover .dropdown-content {display: block;}
 /* GENERAL RULES ENDS */
 
 /* CREATE LISTING RULES STARTS */

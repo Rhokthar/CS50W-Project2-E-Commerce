@@ -28,11 +28,21 @@
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'index' %}">Active Listings</a>
             </li>
+            <div class="dropdown">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'categories' %}">Categories</a>
+                    <div class="dropdown-content">
+                        {% for category in categories %}
+                            <a href="{% url 'category' category %}">{{ category }}</a>
+                        {% endfor %}
+                    </div>
+                </li>
+            </div>
             {% if user.is_authenticated %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'create-listing' %}">Create Listing</a>
                 </li>
-                <li>
+                <li class="nav-item">
                     <a href="{% url 'watchlist' %}">Your Watchlist</a>
                 </li>
                 <li class="nav-item">

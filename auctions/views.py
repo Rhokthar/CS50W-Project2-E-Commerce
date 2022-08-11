@@ -10,6 +10,32 @@ from django.contrib.auth.decorators import login_required
 
 from .models import Listing, User
 from .forms import *
+from .utils import *
+
+
+# The difference is that one brings to a category page,
+# the other brings to the filtered-listing page
+# CATEGORIES FUNCTION STARTS 
+def Categories(request):
+    return render(request, "auctions/categories.html", {
+        "categories": CreateCategoriesList(),
+        # Flag for Displaying Listing Categories in "categories.html"
+        "listFlag": True
+    })
+# CATEGORIES FUNCTION ENDS 
+# CATEGORY FUNCTION STARTS
+def Category(request, category):
+    # Vars
+    listingsFilteredList = Listing.objects.filter(category=category).all().order_by("-id")
+
+    return render(request, "auctions/categories.html", {
+        "listings": listingsFilteredList,
+        "category": category,
+        # Flag for Displaying Filtered List in "categories.html"
+        "listFlag": False,
+        "categories": CreateCategoriesList()
+    })
+# CATEGORY FUNCTION ENDS
 
 
 # CLOSE LISTING FUNCTION STARTS
@@ -75,7 +101,8 @@ def CreateListing(request):
             except:
                 return render(request, "auctions/new-listing.html", {
                     "error": "Something went wrong.",
-                    "form": listingForm
+                    "form": listingForm,
+                    "categories": CreateCategoriesList()
                 })
             
             return HttpResponseRedirect(reverse("index"))
@@ -86,7 +113,8 @@ def CreateListing(request):
         return HttpResponseRedirect(reverse("login"))
     
     return render(request, "auctions/new-listing.html", {
-        "form": ListingForm()
+        "form": ListingForm(),
+        "categories": CreateCategoriesList()
     })
 # CREATE LISTING FUNCTION ENDS
 
@@ -96,7 +124,8 @@ def index(request):
     # Creare una lista con tutti i listing
     listingList = Listing.objects.all().order_by("-id")
     return render(request, "auctions/index.html", {
-        "listingList": listingList
+        "listingList": listingList,
+        "categories": CreateCategoriesList()
     })
 # INDEX FUNCTION ENDS
 
@@ -119,7 +148,8 @@ def ListingsPage(request, id):
     return render(request, "auctions/listing-page.html", {
         "listing": listing,
         "winner": winner,
-        "comments": Comment.objects.filter(listing=listing).all() 
+        "comments": Comment.objects.filter(listing=listing).all(),
+        "categories": CreateCategoriesList() 
     })
 # LISTING PAGE FUNCTION ENDS
 
@@ -139,10 +169,13 @@ def login_view(request):
             return HttpResponseRedirect(reverse("index"))
         else:
             return render(request, "auctions/login.html", {
-                "message": "Invalid username and/or password."
+                "message": "Invalid username and/or password.",
+                "categories": CreateCategoriesList()
             })
     else:
-        return render(request, "auctions/login.html")
+        return render(request, "auctions/login.html", {
+            "categories": CreateCategoriesList()
+        })
 # LOGIN VIEW FUNCTION ENDS
 
 
@@ -200,7 +233,8 @@ def register(request):
         confirmation = request.POST["confirmation"]
         if password != confirmation:
             return render(request, "auctions/register.html", {
-                "message": "Passwords must match."
+                "message": "Passwords must match.",
+                "categories": CreateCategoriesList()
             })
 
         # Attempt to create new user
@@ -209,12 +243,15 @@ def register(request):
             user.save()
         except IntegrityError:
             return render(request, "auctions/register.html", {
-                "message": "Username already taken."
+                "message": "Username already taken.",
+                "categories": CreateCategoriesList()
             })
         login(request, user)
         return HttpResponseRedirect(reverse("index"))
     else:
-        return render(request, "auctions/register.html")
+        return render(request, "auctions/register.html", {
+            "categories": CreateCategoriesList()
+        })
 # REGISTER FUNCTION ENDS
 
 
@@ -237,5 +274,7 @@ def WatchlistHandler(request):
             watchlistUser.watchlist.remove(listingItem)
     
     # GET Method
-    return render(request, "auctions/watchlist.html")
+    return render(request, "auctions/watchlist.html", {
+        "categories": CreateCategoriesList()
+    })
 # WATCHLIST HANDLING FUNCTION ENDS

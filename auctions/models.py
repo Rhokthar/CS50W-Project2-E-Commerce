@@ -31,11 +31,13 @@ FSH = "Fashion"
 TOY = "Toys"
 HOM = "Home"
 ELE = "Electronics"
+CAR = "Cars"
 CATEGORIES_CHOICES = (
     (FSH, "Fashion"),
     (TOY, "Toys"),
     (HOM, "Home"),
     (ELE, "Electronics"),
+    (CAR, "Cars"),
 )
 # LISTING CLASS STARTS
 class Listing(models.Model):
