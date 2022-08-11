@@ -7,7 +7,10 @@
 {% block body %}
 <div class="listing-page-wrapper flex-container vertical-row width-100">
     <!-- LISTING CONTAINER STARTS -->
-    <div class="listing-container flex-container row width-100">
+    {% for message in messages %}
+        {{ message }}
+    {% endfor %}
+    <div class="listing-container flex-container row width-100"> 
         <!-- Left Part -->
         <div class="img-container width-33 padding-all-s">
             <input type="checkbox" />
@@ -22,7 +25,7 @@
                     <form action="{% url 'watchlist' %}" method="post">
                         {% csrf_token %}
                         <input type="hidden" class="user-id" name="user-id" value="{{ user.id }}" />
-                        <button class="listing-button" id="watchlist-item" name="watchlist-item" type="submit" value="{{ listing.id }}">
+                        <button type="submit" class="listing-button" id="watchlist-item" name="watchlist-item" value="{{ listing.id }}">
                             {% if not user.is_authenticated %}
                             <a href="{% url 'login' %}">Add Watchlist</a>
                             {% elif listing in user.watchlist.all %}
@@ -35,7 +38,9 @@
                         </button>
                     </form>
                     <!-- Bid -->
-                    <form action="{% url 'bid' %}" method="get">
+                    <!-- No Sense that the user who posted the listing can bid on it -->
+                    {% if not user == listing.user %}
+                    <form action="{% url 'bid' %}" method="post">
                         {% csrf_token %}
                         <button class="listing-button" type="submit">
                             {% if not user.is_authenticated %}
@@ -44,8 +49,11 @@
                             Bid
                             {% endif %}
                         </button>
-                        <input type="number" id="bid-value" name="bid-value" /> €
+                        <input type="hidden" class="user-id" name="user-id" value="{{ user.id }}" />
+                        <input type="hidden" id="bid-item" name="bid-item" value="{{ listing.id }}" />
+                        <input type="number" id="bid-value" name="bid-value" step="0.01"/> €
                     </form>
+                    {% endif %}
                     <!-- Close Listing -->
                     {% if user.id == listing.user.id %}
                     <form action="{% url 'close-listing' %}" method="get">
@@ -60,7 +68,7 @@
                 <p>Category: {{ listing.category }}</p>
                 <h2><strong>{{ listing.title }}</strong></h2>
                 <p>{{ listing.description }}</p>
-                <p>Actual Price: <strong>{{ listing.price }} €</strong></p>
+                <p>Actual Price: <strong>{{ listing.price|floatformat:2 }} €</strong></p>
                 <p>Seller: {{ listing.user.username }}</p>
             </div>
         </div> <!-- LISTING CONTAINER ENDS -->

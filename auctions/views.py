@@ -1,4 +1,5 @@
 from unicodedata import category
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
@@ -10,9 +11,12 @@ from django.contrib.auth.decorators import login_required
 from .models import Listing, User
 from .forms import *
 
+
+# CLOSE LISTING FUNCTION STARTS
 @login_required
 def CloseListing(request):
     pass
+# CLOSE LISTING FUNCTION ENDS
 
 
 # CREATE LISTING FUNCTION STARTS
@@ -65,11 +69,12 @@ def index(request):
 # INDEX FUNCTION ENDS
 
 
+# LISTING PAGE FUNCTION STARTS
 def ListingsPage(request, id):
     return render(request, "auctions/listing-page.html", {
         "listing": Listing.objects.get(id=id) 
     })
-
+# LISTING PAGE FUNCTION ENDS
 
 
 # LOGIN VIEW FUNCTION STARTS
@@ -100,9 +105,41 @@ def logout_view(request):
     return HttpResponseRedirect(reverse("index"))
 # LOGOUT VIEW FUNCTION ENDS
 
+
+# NEW BID FUNCTION STARTS
 @login_required
 def NewBid(request):
-    pass
+    # Vars
+    bidAmount = request.POST["bid-value"]
+    bidUser = User.objects.get(id=request.POST["user-id"])
+    bidListing = Listing.objects.get(id=request.POST["bid-item"])
+    
+    # Handling Errors
+    # Non Numeric Value
+    try:
+        bidAmount = float(bidAmount)
+    except:
+        messages.error(request, "You can't insert a non-numeric value in the 'Bid' field.")
+        return HttpResponseRedirect(reverse('listing-page', args=[request.POST["bid-item"]]))
+    # Value 0 or Negative
+    if bidAmount <= 0:
+        messages.error(request, "You can't insert a null or negative value for the bid.")
+        return HttpResponseRedirect(reverse('listing-page', args=[request.POST["bid-item"]]))
+    # Value Less then Actual Bid
+    if bidAmount <= bidListing.price:
+        messages.error(request, "Your new bid must be higher then the actual price.")
+        return HttpResponseRedirect(reverse('listing-page', args=[request.POST["bid-item"]]))
+
+    # Inserting Bid into DB
+    Bid.objects.create(user=bidUser, listing=bidListing, offer=bidAmount)
+    # Updating Listing Price
+    bidListing.price = bidAmount
+    bidListing.save()  
+    
+    # Redirect
+    messages.success(request, "Your bid has been saved. The price of the listing has been updated")
+    return HttpResponseRedirect(reverse('listing-page', args=[request.POST["bid-item"]]))
+# NEW BID FUNCTION ENDS
 
 
 # REGISTER FUNCTION STARTS

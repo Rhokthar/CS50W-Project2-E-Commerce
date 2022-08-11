@@ -13,7 +13,7 @@
             <div class="text-center padding-left-xs padding-right-xs width-100">
                 <p><strong>{{ listing.title }}</strong></p>
                 <p class="description padding-bottom-xs padding-top-xs"> {{ listing.description }} </p>
-                <p>Actual Price: <strong>{{ listing.price }} €</strong></p>
+                <p>Actual Price: <strong>{{ listing.price|floatformat:2 }} €</strong></p>
             </div>
         </div>
         {% endfor %}

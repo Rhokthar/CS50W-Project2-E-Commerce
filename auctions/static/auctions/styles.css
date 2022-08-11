@@ -23,6 +23,9 @@ h3 {
 strong { 
     font-weight: bold;
 }
+.error-color {
+    color: red;
+}
 /* GENERAL RULES ENDS */
 
 /* CREATE LISTING RULES STARTS */
