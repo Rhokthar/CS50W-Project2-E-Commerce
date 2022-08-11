@@ -15,13 +15,23 @@ Watchlist
                 </a>
             </div>
             <div class="text-wrapper text-center">
-                <h3  >{{ item.title }}</h3>
+                <h3><strong>{{ item.title }}</strong></h3>
                 <p>{{ item.description }}</p>
                 <p>Actual Price: <strong>{{ item.price }} €</strong></p>
             </div>
+            <form action="{% url 'watchlist' %}" class="margin-left-auto margin-right-auto" method="post">
+                {% csrf_token %}
+                <input type="hidden" class="user-id" name="user-id" value="{{ user.id }}" />
+                <button class="listing-button" id="watchlist-item" name="watchlist-item" type="submit" value="{{ item.id }}">
+                    <input type="hidden" class="handling-type" name="handling-type" value="remove" />
+                    Remove
+                </button>
+            </form>
         </div>
         {% empty %}
-            None
+            <div>
+                <p>Your Watchlist is actually <strong>EMPTY</strong>. Go to <a href="{% url 'index' %}">Active Listing</a> to find something of your interest to add into your Watchlist!</p>
+            </div>
         {% endfor %}
     </div>
 {% endblock %}

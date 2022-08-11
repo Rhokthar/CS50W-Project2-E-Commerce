@@ -21,12 +21,16 @@
                     <!-- Watchlist -->
                     <form action="{% url 'watchlist' %}" method="post">
                         {% csrf_token %}
-                        <input type="hidden" class="user-id" name="user-id" value="{{ user.id }}">
+                        <input type="hidden" class="user-id" name="user-id" value="{{ user.id }}" />
                         <button class="listing-button" id="watchlist-item" name="watchlist-item" type="submit" value="{{ listing.id }}">
                             {% if not user.is_authenticated %}
-                            <a href="{% url 'login' %}">Watchlist</a>
+                            <a href="{% url 'login' %}">Add Watchlist</a>
+                            {% elif listing in user.watchlist.all %}
+                            <input type="hidden" class="handling-type" name="handling-type" value="remove" />
+                            Remove
                             {% else %}
-                            Watchlist
+                            <input type="hidden" class="handling-type" name="handling-type" value="add" />
+                            Add Watchlist
                             {% endif %}    
                         </button>
                     </form>

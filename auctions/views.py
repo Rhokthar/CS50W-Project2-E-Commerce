@@ -67,7 +67,7 @@ def index(request):
 
 def ListingsPage(request, id):
     return render(request, "auctions/listing-page.html", {
-        "listing": Listing.objects.get(id=id)
+        "listing": Listing.objects.get(id=id) 
     })
 
 
@@ -133,14 +133,25 @@ def register(request):
         return render(request, "auctions/register.html")
 # REGISTER FUNCTION ENDS
 
+
+# WATCHLIST HANDLING FUNCTION STARTS
 @login_required
 def WatchlistHandler(request):
+    # POST Method
     if request.method == "POST":
         listingItem = Listing.objects.get(id=request.POST["watchlist-item"])
         watchlistUser = User.objects.get(id=request.POST["user-id"])
-        watchlistUser.watchlist.add(listingItem)
-        watchlistUser.save()
 
-        return HttpResponseRedirect(reverse("watchlist"))
+        # Add to Watchlist
+        if request.POST["handling-type"] == "add":            
+            watchlistUser.watchlist.add(listingItem)
+            watchlistUser.save()
+
+            return HttpResponseRedirect(reverse("watchlist"))
+        # Remove from Watchlist
+        else:
+            watchlistUser.watchlist.remove(listingItem)
     
+    # GET Method
     return render(request, "auctions/watchlist.html")
+# WATCHLIST HANDLING FUNCTION ENDS
