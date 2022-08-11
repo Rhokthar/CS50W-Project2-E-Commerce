@@ -5,9 +5,9 @@
         <div class="listing-wrapper flex-container row flex-wrap width-100">
             {% for listing in listingList %}
             <div class="width-20 padding-all-s">
-                <div class="width-100">
+                <div class="width-100 flex-container justify-center ">
                     <a href="{% url 'listing-page' listing.id %}">
-                        <img src="../../static/auctions/imgs/Placeholder.png" alt="Listing Image" />
+                        <img src="{{ listing.imageURL }}" alt="Listing Image" />
                     </a>
                 </div>
                 <div class="text-center padding-left-xs padding-right-xs width-100">

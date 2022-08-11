@@ -67,6 +67,4 @@ class User(AbstractUser):
     # E-mail
     # Watchlist
     watchlist = models.ManyToManyField(Listing, blank=True, related_name="watchlist")
-    def __str__(self):
-        return f"{id}"
 # USER MODEL ENDS

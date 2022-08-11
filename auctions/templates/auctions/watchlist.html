@@ -11,7 +11,7 @@ Watchlist
         <div class="flex-container vertical-row width-20 padding-all-s">
             <div class="img-wrapper width-100">
                 <a href="{% url 'listing-page' item.id %}">
-                    <img src="../../static/auctions/imgs/Placeholder.png" alt="Placeholder" />
+                    <img src="{{ listing.imageURL }}" alt="Placeholder" />
                 </a>
             </div>
             <div class="text-wrapper text-center">

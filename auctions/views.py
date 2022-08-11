@@ -70,10 +70,6 @@ def CommentHandler(request):
     Comment.objects.create(user=commentUser, listing=commentListing, comment=commentContent)
     
     return HttpResponseRedirect(reverse('listing-page', args=[request.POST["comment-listing"]]))
-    # BUGGIA QUESTO VA FATTO SULLA INDEX
-    # Se get, deve displayare tutti i commenti su quell'oggetto
-        # Dovrà passare chi ha fatto il commento
-        # Dovrà passare l'effettivo commento
 # COMMENT FUNCTION ENDS
 
 
