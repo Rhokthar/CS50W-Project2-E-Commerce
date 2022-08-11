@@ -5,5 +5,5 @@ from .models import *
 class ListingForm(ModelForm):
     class Meta:
         model = Listing
-        exclude = ["user"]
+        exclude = ["user", "openListing"]
 # LISTING FORM ENDS

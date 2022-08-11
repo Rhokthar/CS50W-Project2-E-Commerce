@@ -10,12 +10,12 @@ New Listing
         <p>{{ error }}</p>
     </div>
 {% endif %}
-<div class="flex-container justify-center width-100">
-    <form action="{% url 'create-listing' %}" method="post">
+<div class="form-container flex-container justify-center width-100">
+    <form action="{% url 'create-listing' %}" method="post" class="width-33 padding-top-s">
         {% csrf_token %}
-        <div class="flex-container vertical-row align-center">
+        <div class="form-wrapper flex-container vertical-row align-center width-100 padding-all-s">
             {{ form }}
-            <input class="margin-top-xs" type="submit" value="Create Listing" />
+            <input type="submit" class="margin-top-xs" value="Create Listing" />
         </div>
     </form>
 </div>

@@ -51,6 +51,24 @@ strong {
     display: block;
 }
 .dropdown:hover .dropdown-content {display: block;}
+
+#home-link {
+    text-decoration: none;
+    color: black;
+}
+
+input[type="submit"],
+button[type="submit"] {
+    padding: 1rem;
+    border: 1px solid grey;
+    border-radius: 3.4rem;
+    transition: 0.5s;
+}
+input[type="submit"]:hover,
+button[type="submit"]:hover {
+    box-shadow: 0 0 1rem grey;
+    background-color: #bbb;
+}
 /* GENERAL RULES ENDS */
 
 /* CREATE LISTING RULES STARTS */
@@ -60,24 +78,39 @@ select {
     margin-bottom: 2rem;
 }
 label {
+    font-weight: 750;
     padding-bottom: 1rem;
 }
+.form-wrapper {
+    border: 1px solid grey;
+    border-radius: 3.4rem;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.5);
+}
+
 /* CREATE LISTING RULES ENDS */
 
 /* INDEX RULES STARTS */
-.listing-wrapper p {
+.listings-container p {
     font-size: 1.4rem;
+}
+
+.listing-wrapper {
+    border: 0.1rem solid #ddd;
+    margin-right: -0.1rem;
+    margin-top: -0.1rem;
+}
+.listing-wrapper a {
+    transition: 0.5s;
+}
+.listing-wrapper a:hover {
+    box-shadow: 0 0 1rem grey;
 }
 /* INDEX RULES ENDS */
 
 /* LISTING PAGE RULES STARTS */
 .img-container {
-    position: relative;
-}
-input[type="checkbox"] {
-    position: absolute;
-    top: 3%;
-    left: 3%;
+    border-right: 1px solid #ddd;
+
 }
 .listing-button {
     cursor: pointer;
@@ -87,6 +120,12 @@ input[type="checkbox"] {
 .listing-button > a {
     text-decoration: none;
     color: black;
+}
+.listing-description > * {
+    padding: 1rem;
+}
+.listing-description div:nth-child(2) {
+    border-top: 1px solid #ddd;
 }
 .comment-textarea {
     resize: none;

@@ -16,7 +16,9 @@
         
     </head>
     <body>
-        <h1>Auctions</h1>
+        <a href="{% url 'index' %}" id="home-link">
+            <h1>Auctions</h1>
+        </a>
         <div>
             {% if user.is_authenticated %}
                 Signed in as <strong>{{ user.username }}</strong>.

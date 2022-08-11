@@ -11,7 +11,11 @@ Watchlist
         <div class="flex-container vertical-row width-20 padding-all-s">
             <div class="img-wrapper width-100">
                 <a href="{% url 'listing-page' item.id %}">
-                    <img src="{{ listing.imageURL }}" alt="Placeholder" />
+                    {% if listing.imageURL %}
+                        <img src="{{ listing.imageURL }}" alt="Listing Image" />
+                    {% else %}
+                        <img src="../../static/auctions/imgs/Placeholder.png" alt="Placeholder" />
+                    {% endif %}
                 </a>
             </div>
             <div class="text-wrapper text-center">

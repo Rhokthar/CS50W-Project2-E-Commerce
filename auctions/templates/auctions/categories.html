@@ -23,7 +23,11 @@ Categories
                 <div class="width-20 padding-all-s">
                     <div class="width-100">
                         <a href="{% url 'listing-page' listing.id %}">
-                            <img src="{{ listing.imageURL }}" alt="Listing Image" />
+                            {% if listing.imageURL %}
+                                <img src="{{ listing.imageURL }}" alt="Listing Image" />
+                            {% else %}
+                                <img src="../../static/auctions/imgs/Placeholder.png" alt="Placeholder" />
+                            {% endif %}
                         </a>
                     </div>
                     <div class="text-center padding-left-xs padding-right-xs width-100">

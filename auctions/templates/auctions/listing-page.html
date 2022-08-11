@@ -8,26 +8,32 @@
 <!-- FULL PAGE WRAPPER STARTS -->
 <div class="listing-page-wrapper flex-container vertical-row width-100">
 
-    {% if listing.openListing == False %}
-    <h3><strong>This Listing has been CLOSED.</strong></h3>
-        {% if winner == None %}
-            <p>Nobody has done any bid on this auction.</p>
-        {% elif winner != None and user.is_authenticated and user.id == winner.user.id %}
-            <p>You are the winner of this auction!</p>
-        {% else %}
-            <p>The winner of this auction is the user '{{ winner.user.username }}'!</p>
+    <div class="messages">
+        {% if listing.openListing == False %}
+        <h3><strong>This Listing has been CLOSED.</strong></h3>
+            {% if winner == None %}
+                <p>Nobody has done any bid on this auction.</p>
+            {% elif winner != None and user.is_authenticated and user.id == winner.user.id %}
+                <p>You are the winner of this auction!</p>
+            {% else %}
+                <p>The winner of this auction is the user '{{ winner.user.username }}'!</p>
+            {% endif %}
         {% endif %}
-    {% endif %}
-    <!-- MESSAGES -->
-    {% for message in messages %}
-        {{ message }}
-    {% endfor %}
+        <!-- MESSAGES -->
+        {% for message in messages %}
+            {{ message }}
+        {% endfor %}
+    </div>
     <!-- AUCTION CONTAINER STARTS -->
     <div class="listing-container flex-container row width-100"> 
         <!-- IMAGE & BUTTONS SECTION STARTS -->
         <div class="img-container width-33 padding-all-s">
 
-            <img src="{{ listing.imageURL }}" alt="Placeholder" />
+            {% if listing.imageURL %}
+                <img src="{{ listing.imageURL }}" alt="Listing Image" />
+            {% else %}
+                <img src="../../static/auctions/imgs/Placeholder.png" alt="Placeholder" />
+            {% endif %}
 
             {% if listing.openListing == True %}
                 <!-- BUTTONS CONTAINER STARTS -->
@@ -41,7 +47,7 @@
                                 <a href="{% url 'login' %}">Add Watchlist</a>
                             {% elif listing in user.watchlist.all %}
                                 <input type="hidden" class="handling-type" name="handling-type" value="remove" />
-                                Remove
+                                Remove Watchlist
                             {% else %}
                                 <input type="hidden" class="handling-type" name="handling-type" value="add" />
                                 Add Watchlist
@@ -76,12 +82,16 @@
             {% endif %}
         </div> <!-- IMAGE & BUTTONS SECTION ENDS -->
         <!-- DESCRIPTION SECTION STARTS -->
-        <div class="width-66 padding-all-s">
-            <p>Category: {{ listing.category }}</p>
-            <h2><strong>{{ listing.title }}</strong></h2>
-            <p>{{ listing.description }}</p>
-            <p>Actual Price: <strong>{{ listing.price|floatformat:2 }} €</strong></p>
-            <p>Seller: {{ listing.user.username }}</p>
+        <div class="listing-description flex-container vertical-row justify-space-between width-66 padding-all-s">
+            <div>
+                <p class="padding-bottom-m">Category: {{ listing.category }}</p>
+                <h2 class="padding-bottom-xs"><strong>{{ listing.title }}</strong></h2>
+                <p>{{ listing.description }}</p>
+            </div>
+            <div class="margin-bottom-l">
+                <p>Actual Price: <strong>{{ listing.price|floatformat:2 }} €</strong></p>
+                <p>Seller: {{ listing.user.username }}</p>
+            </div>
         </div> <!-- DESCRIPTION SECTION ENDS -->
     </div> <!-- AUCTION CONTAINER ENDS -->
 
