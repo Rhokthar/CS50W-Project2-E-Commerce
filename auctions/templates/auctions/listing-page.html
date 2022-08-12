@@ -8,21 +8,23 @@
 <!-- FULL PAGE WRAPPER STARTS -->
 <div class="listing-page-wrapper flex-container vertical-row width-100">
 
-    <div class="messages">
+    <div class="messages text-center">
+        <!-- MESSAGES -->
+        <div class="messages-django-wrapper padding-bottom-xs">
+            {% for message in messages %}
+                <span class="{{ message.tags }}-color">{{ message }}</span>
+            {% endfor %}
+        </div>
         {% if listing.openListing == False %}
-        <h3><strong>This Listing has been CLOSED.</strong></h3>
+        <h3 class="padding-bottom-xs"><strong>This Listing has been <span class="error-color">CLOSED</span>.</strong></h3>
             {% if winner == None %}
                 <p>Nobody has done any bid on this auction.</p>
             {% elif winner != None and user.is_authenticated and user.id == winner.user.id %}
-                <p>You are the winner of this auction!</p>
+                <p><span class="success-color">You are the winner</span> of this auction!</p>
             {% else %}
-                <p>The winner of this auction is the user '{{ winner.user.username }}'!</p>
+                <p class="padding-bottom-s">The winner of this auction is the user <span class="success-color">{{ winner.user.username }}</span>!</p>
             {% endif %}
         {% endif %}
-        <!-- MESSAGES -->
-        {% for message in messages %}
-            {{ message }}
-        {% endfor %}
     </div>
     <!-- AUCTION CONTAINER STARTS -->
     <div class="listing-container flex-container row width-100"> 
@@ -89,7 +91,7 @@
                 <p>{{ listing.description }}</p>
             </div>
             <div class="margin-bottom-l">
-                <p>Actual Price: <strong>{{ listing.price|floatformat:2 }} €</strong></p>
+                <p>Current Price: <strong>{{ listing.price|floatformat:2 }} €</strong></p>
                 <p>Seller: {{ listing.user.username }}</p>
             </div>
         </div> <!-- DESCRIPTION SECTION ENDS -->
@@ -97,14 +99,14 @@
 
     <!-- COMMENTS CONTAINER STARTS -->
     <div class="comments-container flex-container padding-all-s vertical-row width-100">
-        <h3><strong>COMMENTS</strong></h3>
+        <h3 class="padding-bottom-s"><strong>COMMENTS</strong></h3>
         <!-- Comment Display -->
         {% for comment in comments %}
-            <div class="padding-top-s width-100">
+            <div class="user-comment padding-top-s width-100">
                 <h4>{{ comment.user.username }}</h4>
                 <p>{{ comment.comment }}</p>
                 {% empty %}
-                <p>No comments yet. Be the first!</p>
+                    <p>No comments yet. Be the first!</p>
             </div>
         {% endfor %}
         {% if listing.openListing == True %}
@@ -112,7 +114,7 @@
             <form action="{% url 'comment' %}" method="post">
                 {% csrf_token %}
                 <div class="flex-container vertical-row align-center margin-top-s width-100">
-                    <textarea class="comment-textarea width-100" id="comment-content" name="comment-content" placeholder="Add a Comment..." rows="7"></textarea>
+                    <textarea class="comment-textarea width-50 padding-all-xs margin-top-m" id="comment-content" name="comment-content" placeholder="Add a Comment..." rows="7"></textarea>
                     <input type="hidden" id="comment-user" name="comment-user" value="{{ user.id }}" />                
                     <input type="hidden" id="comment-listing" name="comment-listing" value="{{ listing.id }}" />                
                     <span>

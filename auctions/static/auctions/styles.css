@@ -1,38 +1,19 @@
 /* GENERAL RULES STARTS */
-body {
-    padding: 1rem;
-    font-size: 1.7rem;
-    font-family: Arial, Helvetica, sans-serif;
-}
 a,
 p {
     font-family: Verdana, Geneva, Tahoma, sans-serif; 
 }
-h1 {
-    font-size: 5rem;
-    font-weight: 750;
+a, a:visited, a:link, a:active {
+    text-decoration: none;
+    color: blue;
 }
-h2 {
-    font-size: 3rem;
-    font-weight: 600;
+a:hover {
+    text-decoration: underline;
 }
-h3 {
-    font-size: 2rem;
-    font-weight: 500;
-}
-strong { 
-    font-weight: bold;
-}
-.error-color {
-    color: red;
-}
-.nav {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-}
-.nav-item {
+body {
     padding: 1rem;
+    font-size: 1.7rem;
+    font-family: Arial, Helvetica, sans-serif;
 }
 .dropdown {
     position: relative;
@@ -51,6 +32,36 @@ strong {
     display: block;
 }
 .dropdown:hover .dropdown-content {display: block;}
+
+h1 {
+    font-size: 5rem;
+    font-weight: 750;
+}
+h2 {
+    font-size: 3rem;
+    font-weight: 600;
+}
+h3 {
+    font-size: 2rem;
+    font-weight: 500;
+}
+strong { 
+    font-weight: bold;
+}
+.error-color {
+    color: red;
+}
+.success-color {
+    color: green;
+}
+.nav {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.nav-item {
+    padding: 1rem;
+}
 
 #home-link {
     text-decoration: none;
@@ -89,28 +100,47 @@ label {
 
 /* CREATE LISTING RULES ENDS */
 
-/* INDEX RULES STARTS */
-.listings-container p {
+/* INDEX & WISHLIST RULES STARTS */
+.listings-container p,
+.wishlist-container p {
     font-size: 1.4rem;
 }
-
-.listing-wrapper {
+.listing-wrapper,
+.wishlist-wrapper {
     border: 0.1rem solid #ddd;
     margin-right: -0.1rem;
     margin-top: -0.1rem;
 }
-.listing-wrapper a {
+.listing-wrapper a,
+.wishlist-wrapper a {
     transition: 0.5s;
 }
-.listing-wrapper a:hover {
+.listing-wrapper a:hover,
+.wishlist-wrapper a:hover {
     box-shadow: 0 0 1rem grey;
 }
-/* INDEX RULES ENDS */
+/* INDEX & WISHLIST RULES ENDS */
 
 /* LISTING PAGE RULES STARTS */
+#bid-value {
+    width: 12ch;
+}
+.comments-container {
+    border-top: 1px solid #ddd;
+}
+.comment-textarea {
+    resize: none;
+}
 .img-container {
     border-right: 1px solid #ddd;
-
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type=number] {
+    -moz-appearance: textfield;
 }
 .listing-button {
     cursor: pointer;
@@ -127,7 +157,26 @@ label {
 .listing-description div:nth-child(2) {
     border-top: 1px solid #ddd;
 }
-.comment-textarea {
-    resize: none;
+.user-comment h4 {
+    border-left: 3px solid #ddd;
+    padding: 1rem;
+    margin-bottom: -1px;
+    font-weight: 550;
+}
+.user-comment p {
+    /* border-left: 1px solid #ddd; */
+    margin: 0.5rem 2rem;
+    padding: 0.5rem 1rem;
 }
 /* LISTING PAGE RULES ENDS */
+
+/* CATEGORIES PAGE RULES STARTS */
+.categories-container {
+    border: 1px solid #ddd;
+    border-radius: 3.4rem;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.5)
+}
+.categories-wrapper li {
+    padding: 1rem;
+}
+/* CATEGORIES PAGE RULES ENDS */

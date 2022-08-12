@@ -5,23 +5,31 @@ Watchlist
 {% endblock %}
 
 {% block body %}
-    <h2>Your Watchlist Items</h2>
-    <div class="wishlist-items-wrapper flex-container row width-100">
+    <div class="messages-django-container text-center">
+        {% for message in messages %}
+            <span class="{{ message.tags }}-color">{{ message }}</span>
+        {% endfor %}
+    </div>
+    <h2 class="padding-top-s">Your Watchlist Items</h2>
+    <div class="wishlist-container flex-container row flex-wrap width-100 padding-top-m padding-bottom-xl"">
         {% for item in user.watchlist.all %}
-        <div class="flex-container vertical-row width-20 padding-all-s">
-            <div class="img-wrapper width-100">
+        <div class="wishlist-wrapper flex-container vertical-row width-20 padding-all-s">
+            <div class="img-wrapper width-100 flex-container justify-center margin-bottom-s">
                 <a href="{% url 'listing-page' item.id %}">
-                    {% if listing.imageURL %}
-                        <img src="{{ listing.imageURL }}" alt="Listing Image" />
+                    {% if item.imageURL %}
+                        <img src="{{ item.imageURL }}" alt="Listing Image" />
                     {% else %}
                         <img src="../../static/auctions/imgs/Placeholder.png" alt="Placeholder" />
                     {% endif %}
                 </a>
             </div>
-            <div class="text-wrapper text-center">
+            <div class="text-wrapper text-center padding-left-xs padding-right-xs width-100">
                 <h3><strong>{{ item.title }}</strong></h3>
-                <p>{{ item.description }}</p>
-                <p>Actual Price: <strong>{{ item.price }} €</strong></p>
+                <p class="description padding-bottom-xs padding-top-xs">{{ item.description }}</p>
+                <p>Current Price: <strong>{{ item.price|floatformat:2 }} €</strong></p>
+                {% if item.openListing == False %}
+                    <h3 class="padding-top-s"><strong>CLOSED</strong></h3>
+                {% endif %}
             </div>
             <form action="{% url 'watchlist' %}" class="margin-left-auto margin-right-auto" method="post">
                 {% csrf_token %}

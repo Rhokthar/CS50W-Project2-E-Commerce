@@ -101,6 +101,7 @@ def CreateListing(request):
                     "categories": CreateCategoriesList()
                 })
             
+            messages.success(request, "Auction listed successfully!")
             return HttpResponseRedirect(reverse("index"))
     
     # GET METHOD
@@ -263,7 +264,8 @@ def WatchlistHandler(request):
         if request.POST["handling-type"] == "add":            
             watchlistUser.watchlist.add(listingItem)
             watchlistUser.save()
-
+            
+            messages.success(request, "Auction successfully added to your Watchlist!")
             return HttpResponseRedirect(reverse("watchlist"))
         # Remove from Watchlist
         else:

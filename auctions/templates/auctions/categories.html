@@ -6,22 +6,24 @@ Categories
 
 {% block body %}
     {% if listFlag == True %}
-        <h2>Categories:</h2>
-        <ul>
-            {% for category in categories %}
-                <a href="{% url 'category' category %}">
-                    <li>{{ category }}</li>
-                </a>
-            {% empty %}
-                No categories
-            {% endfor %}
-        </ul>
+        <div class="categories-container text-center width-20 margin-left-auto margin-right-auto padding-bottom-l margin-top-m">
+            <h2 class="padding-top-s padding-bottom-s">Categories</h2>
+            <ul class="categories-wrapper flex-container vertical-row">
+                {% for category in categories %}
+                    <a href="{% url 'category' category %}">
+                        <li>{{ category }}</li>
+                    </a>
+                {% empty %}
+                    No categories
+                {% endfor %}
+            </ul>
+        </div>
     {% else %}
-        <h2>Search result for {{ category }}:</h2>
-        <div class="listing-wrapper flex-container row flex-wrap width-100">
+        <h2 class="padding-top-s">Search results for {{ category }}:</h2>
+        <div class="listings-container flex-container row flex-wrap width-100 padding-top-m padding-bottom-xl">
             {% for listing in listings %}
-                <div class="width-20 padding-all-s">
-                    <div class="width-100">
+                <div class="listing-wrapper width-20 padding-all-s">
+                    <div class="img-wrapper width-100 flex-container justify-center margin-bottom-s">
                         <a href="{% url 'listing-page' listing.id %}">
                             {% if listing.imageURL %}
                                 <img src="{{ listing.imageURL }}" alt="Listing Image" />
@@ -30,12 +32,12 @@ Categories
                             {% endif %}
                         </a>
                     </div>
-                    <div class="text-center padding-left-xs padding-right-xs width-100">
+                    <div class="text-wrapper text-center padding-left-xs padding-right-xs width-100">
                         <p><strong>{{ listing.title }}</strong></p>
                         <p class="description padding-bottom-xs padding-top-xs"> {{ listing.description }} </p>
-                        <p>Actual Price: <strong>{{ listing.price|floatformat:2 }} €</strong></p>
+                        <p>Current Price: <strong>{{ listing.price|floatformat:2 }} €</strong></p>
                         {% if listing.openListing == False %}
-                            <h3><strong>CLOSED</strong></h3>
+                            <h3 class="padding-top-s"><strong>CLOSED</strong></h3>
                         {% endif %}
                     </div>
                 </div>
